@@ -5,7 +5,7 @@ import Header from '@/components/Header'
 // [250710] 페이지 전환 <AnimatePresence><motion.div> ...
 export default function Default() {
   const outlet = useOutlet()
-  // const location =
+  // z`
   return (
     <>
       <Header />
