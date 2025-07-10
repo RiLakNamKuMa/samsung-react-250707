@@ -1,4 +1,6 @@
-import { NavLink } from 'react-router'
+// [250710] 페이지 정보 확인 가능 : useLocation
+// [250710] 데이터 감시용 : useEffect
+import { NavLink, useLocation, useEffect } from 'react-router'
 
 const navigations = [
   { to: '/', label: 'Home' },
@@ -9,6 +11,7 @@ const navigations = [
 ]
 
 export default function Header() {
+  const token = localStorage.getItem('token')
   return (
     <header>
       <nav className="flex items-center gap-2">
