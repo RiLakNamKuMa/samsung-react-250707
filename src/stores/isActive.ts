@@ -23,7 +23,7 @@ export const useIsActiveStore = create(
   // combine (상태객체, 액션)
   combine(
     { isActive: true }, // 상태 : state}, (set, get) => {
-    (set, get) => {
+    set => {
       return {
         isActive: true, // 상태 : state
         toggleActive: () => {
