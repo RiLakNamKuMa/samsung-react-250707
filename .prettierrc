@@ -1,0 +1,11 @@
+{
+  "semi": false,
+  "singleQuote": true,
+  "singleAttributePerLine": true,
+  "bracketSameLine": true,
+  "endOfLine": "auto",
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "htmlWhitespaceSensitivity": "ignore",
+  "plugins": ["prettier-plugin-tailwindcss"]
+}
