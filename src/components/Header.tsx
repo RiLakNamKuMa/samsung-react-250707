@@ -1,6 +1,8 @@
 // [250710] 페이지 정보 확인 가능 : useLocation
 // [250710] 데이터 감시용 : useEffect
-import { NavLink, useLocation, useEffect } from 'react-router'
+import { NavLink, useLocation, useNavigate } from 'react-router'
+import { useEffect, useState } from 'react'
+import Button from '@/components/Button'
 
 const navigations = [
   { to: '/', label: 'Home' },
@@ -11,7 +13,24 @@ const navigations = [
 ]
 
 export default function Header() {
-  const token = localStorage.getItem('token')
+  // [250710] Token 정보를 위한 반응형 데이터 추가
+  const [token, setToken] = useState<string | null>(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  // [250710] Token 정보를 매번 확인
+  useEffect(() => {
+    setToken(localStorage.getItem('token'))
+  }, [location])
+
+  function signOut() {
+    localStorage.removeItem('token')
+    // [250710] 메인 화면으로 이동한 후 새로 고침
+    // navigate('/') 은 이동만 시키는거임
+    navigate('/')
+    window.location.reload()
+  }
+
   return (
     <header>
       <nav className="flex items-center gap-2">
@@ -21,6 +40,9 @@ export default function Header() {
               key={nav.to}
               to={nav.to}
               end
+              style={{
+                display: nav.to === '/signin' && token ? 'none' : 'block'
+              }}
               className={({ isActive }) => {
                 return isActive ? 'text-red-500' : 'text-black'
               }}>
@@ -28,6 +50,7 @@ export default function Header() {
             </NavLink>
           )
         })}
+        {token && <Button onClick={signOut}>로그아웃</Button>}
       </nav>
     </header>
   )
