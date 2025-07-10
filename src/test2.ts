@@ -90,12 +90,12 @@ if (inputEl) console.log(inputEl.value)
 
 // ------------------------------------------------------- //
 
-const user: {
-  name: string
-  getName: (a: string) => string
-} = {
-  name: 'Neo',
-  getName: (lastName: string) => {
-    return `${lastName} ${this.name}`
-  }
-}
+// const user: {
+//   name: string
+//   getName: (a: string) => string
+// } = {
+//   name: 'Neo',
+//   getName: (lastName: string) => {
+//     return `${lastName} ${this.name}`
+//   }
+// }
