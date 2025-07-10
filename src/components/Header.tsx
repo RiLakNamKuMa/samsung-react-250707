@@ -35,14 +35,18 @@ export default function Header() {
     <header>
       <nav className="flex items-center gap-2">
         {navigations.map(nav => {
+          // [250710] 조건부 랜더링 추가
+          const isSignIn = nav.to === '/signin'
+          if (isSignIn && token) return null
           return (
             <NavLink
               key={nav.to}
               to={nav.to}
               end
-              style={{
-                display: nav.to === '/signin' && token ? 'none' : 'block'
-              }}
+              // [250710] 조건부 랜더링 추가를 위한 주석 추가
+              // style={{
+              //   display: nav.to === '/signin' && token ? 'none' : 'block'
+              // }}
               className={({ isActive }) => {
                 return isActive ? 'text-red-500' : 'text-black'
               }}>
