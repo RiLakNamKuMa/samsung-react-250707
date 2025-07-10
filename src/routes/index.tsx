@@ -8,6 +8,7 @@ import MovieDetails from '@/routes/pages/MovieDetails'
 import NotFound from '@/routes/pages/NotFound'
 import SignIn from '@/routes/pages/SignIn'
 import { requiresAuth } from '@/routes/loaders/index'
+import Todos from '@/routes/pages/Todos'
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,8 @@ const router = createBrowserRouter([
       },
       // [250710] Route 객체 추가 : SignIn
       // "로그인 페이지"
-      { path: '/signin', element: <SignIn /> }
+      { path: '/signin', element: <SignIn /> },
+      { path: '/todos', element: <Todos /> }
     ]
   },
   // [250710] Route 객체 추가 : EmptyLayout
