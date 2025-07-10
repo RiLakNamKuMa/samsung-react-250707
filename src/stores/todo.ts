@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { combine } from 'zustand/middleware'
+import axios from 'axios'
 
 // Template
 // export const useTodoStore = create(
@@ -21,6 +22,18 @@ interface Todo {
 export const useTodoStore = create(
   combine({ todos: [] as Todos }, () => {
     // [250710] Todo List 갱신을 위한 비동기 함수 추가
-    return { fetchTodos: async () => {} }
+    return {
+      fetchTodos: async () => {
+        const { data } = axios({
+          url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json',
+            apikey: import.meta.env.VITE_APIKEY,
+            username: import.meta.env.VITE_USERNAME
+          }
+        })
+      }
+    }
   })
 )
