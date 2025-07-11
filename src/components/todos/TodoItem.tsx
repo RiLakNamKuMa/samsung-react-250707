@@ -10,6 +10,12 @@ export default function TodoItem({ todo }: { todo: Todo }) {
 
   const [title, setTitle] = useState(todo.title)
 
+  // [250711] 수정 모드 꺼졌을 때 원복 처리
+  function offEditMode() {
+    setIsEditing(false)
+    setTitle(todo.title)
+  }
+
   // [250711] 수정 모드 / 출력 모드 추가
   return (
     <li className="mt-2">
@@ -21,12 +27,12 @@ export default function TodoItem({ todo }: { todo: Todo }) {
             value={title}
             onChange={e => setTitle(e.target.value)}
             onKeyDown={e => {
-              if (e.key === 'Escape') setIsEditing(false)
+              if (e.key === 'Escape') offEditMode()
             }}
           />
           <Button
             variant="secondary"
-            onClick={() => setIsEditing(false)}>
+            onClick={() => offEditMode()}>
             취소
           </Button>
           <Button variant="primary">저장</Button>
