@@ -10,6 +10,7 @@ import { useTodoStore } from '@/stores/todo'
 export default function TodoItem({ todo }: { todo: Todo }) {
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState(todo.title)
+  const [isDone, setIsDone] = useState(todo.done)
   const inputRef = useRef<HTMLInputElement>(null)
   const updateTodo = useTodoStore(state => state.updateTodo)
   const isLoadingForUpdate = useTodoStore(state => state.isLoadingForUpdate)
@@ -21,6 +22,12 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   useEffect(() => {
     if (isEditing) inputRef.current?.focus()
   }, [isEditing])
+
+  // [250711] isDone 감시 하기 위한 useEffect 추가, 서버로 보내는 코드 수행
+  useEffect(() => {
+    updateTodo({ ...todo, done: isDone })
+    // eslint-disable-next-line
+  }, [isDone])
 
   // [250711] 수정 모드 켜졌을 때 처리
   function onEditMode() {
@@ -90,6 +97,8 @@ export default function TodoItem({ todo }: { todo: Todo }) {
           <input
             type="checkbox"
             className="h-4 w-4 accent-blue-500"
+            checked={isDone}
+            onChange={e => setIsDone(e.target.checked)}
           />
           <h3>{todo.title}</h3>
           <Button
