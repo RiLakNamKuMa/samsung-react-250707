@@ -11,6 +11,12 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   const [title, setTitle] = useState(todo.title)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  // [250711] 수정 모드 켜졌을 때 처리
+  function onEditMode() {
+    setIsEditing(true)
+    inputRef.current?.focus()
+  }
+
   // [250711] 수정 모드 꺼졌을 때 원복 처리
   function offEditMode() {
     setIsEditing(false)
@@ -51,7 +57,7 @@ export default function TodoItem({ todo }: { todo: Todo }) {
           <h3>{todo.title}</h3>
           <Button
             variant="primary"
-            onClick={() => setIsEditing(true)}>
+            onClick={() => onEditMode()}>
             수정
           </Button>
         </div>
