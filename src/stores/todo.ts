@@ -80,6 +80,18 @@ export const useTodoStore = create(
               state.todos[index] = todo
               state.isLoadingForUpdate = false
             })
+          },
+          // [250711] Todo 항목 삭제
+          deleteTodo: async (todo: Todo) => {
+            await api({
+              url: `/${todo.id}`,
+              method: 'DELETE'
+            })
+
+            set(state => {
+              const index = state.todos.findIndex(t => t.id === todo.id)
+              console.log(index) //state.todos[index] = todo
+            })
           }
         }
       }
