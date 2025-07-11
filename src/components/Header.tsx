@@ -9,6 +9,7 @@ const navigations = [
   { to: '/about', label: 'About' },
   { to: '/movies', label: 'Movies' },
   { to: '/movies/tt2975590', label: 'Batman v Superman' },
+  { to: '/todos', label: 'Todos' },
   { to: '/signin', label: 'Sign In' }
 ]
 

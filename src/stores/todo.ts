@@ -19,12 +19,15 @@ interface Todo {
   updatedAt: string // 할 일 수정일
 }
 
+// VITE_APIKEY = 'KDT8_bcAWVpD8'
+// VITE_USERNAME = 'KDT8_ParkYoungWoong'
+
 export const useTodoStore = create(
-  combine({ todos: [] as Todos }, () => {
+  combine({ todos: [] as Todos }, set => {
     // [250710] Todo List 갱신을 위한 비동기 함수 추가
     return {
       fetchTodos: async () => {
-        const { data } = axios({
+        const { data } = await axios({
           url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
           method: 'GET',
           headers: {
@@ -33,6 +36,8 @@ export const useTodoStore = create(
             username: import.meta.env.VITE_USERNAME
           }
         })
+        console.log(data)
+        set({ todos: data })
       }
     }
   })
