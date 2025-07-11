@@ -4,12 +4,15 @@ import { useState, useRef, useEffect } from 'react'
 import type { Todo } from '@/stores/todo'
 import Button from '@/components/Button'
 import TextField from '@/components/TextField'
+import { useTodoStore } from '@/stores/todo'
 
 // [250711] TodoList.tsx todo 속성 받아오기
 export default function TodoItem({ todo }: { todo: Todo }) {
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState(todo.title)
   const inputRef = useRef<HTMLInputElement>(null)
+  const updateTodo = useTodoStore(state => state.updateTodo)
+  const isLoadingForUpdate = useTodoStore(state => state.isLoadingForUpdate)
 
   // [250711] 데이터가 바뀌었다고 화면이 랜더링 되는게 아니다... 그래서 useEffect로 데이터를 감시!!!
   // isEditing = true 일 때만 TextField의 focus를 잡아라
@@ -20,12 +23,21 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   // [250711] 수정 모드 켜졌을 때 처리
   function onEditMode() {
     setIsEditing(true)
+    setTitle(todo.title)
   }
 
   // [250711] 수정 모드 꺼졌을 때 원복 처리
   function offEditMode() {
     setIsEditing(false)
     setTitle(todo.title)
+  }
+
+  // [250711] 수정 "저장" 버튼 처리 시 필요한 이벤트
+  async function handleSave() {
+    if (title === todo.title) return
+    // title: title 속성:data 의 이름이 같으면 생략 가능 -> title
+    await updateTodo({ ...todo, title })
+    offEditMode()
   }
 
   // [250711] 수정 모드 / 출력 모드 추가
@@ -41,7 +53,9 @@ export default function TodoItem({ todo }: { todo: Todo }) {
             value={title}
             onChange={e => setTitle(e.target.value)}
             onKeyDown={e => {
+              if (e.nativeEvent.isComposing) return
               if (e.key === 'Escape') offEditMode()
+              if (e.key === 'Enter') handleSave()
             }}
           />
           <Button
@@ -49,7 +63,12 @@ export default function TodoItem({ todo }: { todo: Todo }) {
             onClick={() => offEditMode()}>
             취소
           </Button>
-          <Button variant="primary">저장</Button>
+          <Button
+            variant="primary"
+            loading={isLoadingForUpdate}
+            onClick={handleSave}>
+            저장
+          </Button>
           <Button variant="danger">삭제</Button>
         </div>
       ) : (
