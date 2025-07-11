@@ -9,8 +9,9 @@ import axios from 'axios'
 //   })
 // )
 
-type Todos = Todo[] // 할 일 목록
-interface Todo {
+// [250711] export 추가 (/components/TodoList.tsx 에서 사용할 수 있도록)
+export type Todos = Todo[] // 할 일 목록
+export interface Todo {
   id: string // 할 일 ID
   order: number // 할 일 순서
   title: string // 할 일 제목
