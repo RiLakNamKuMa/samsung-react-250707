@@ -13,6 +13,8 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const updateTodo = useTodoStore(state => state.updateTodo)
   const isLoadingForUpdate = useTodoStore(state => state.isLoadingForUpdate)
+  const deleteTodo = useTodoStore(state => state.deleteTodo)
+  const isLoadingForDelete = useTodoStore(state => state.isLoadingForDelete)
 
   // [250711] 데이터가 바뀌었다고 화면이 랜더링 되는게 아니다... 그래서 useEffect로 데이터를 감시!!!
   // isEditing = true 일 때만 TextField의 focus를 잡아라
@@ -37,6 +39,12 @@ export default function TodoItem({ todo }: { todo: Todo }) {
     if (title === todo.title) return
     // title: title 속성:data 의 이름이 같으면 생략 가능 -> title
     await updateTodo({ ...todo, title })
+    offEditMode()
+  }
+
+  // [250711] 수정 "삭제" 버튼 처리 시 필요한 이벤트
+  async function handleDelete() {
+    await deleteTodo(todo)
     offEditMode()
   }
 
@@ -69,7 +77,12 @@ export default function TodoItem({ todo }: { todo: Todo }) {
             onClick={handleSave}>
             저장
           </Button>
-          <Button variant="danger">삭제</Button>
+          <Button
+            variant="danger"
+            loading={isLoadingForDelete}
+            onClick={() => handleDelete()}>
+            삭제
+          </Button>
         </div>
       ) : (
         // [250711] 출력 모드

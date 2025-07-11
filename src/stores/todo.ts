@@ -38,7 +38,8 @@ export const useTodoStore = create(
         todos: [] as Todos,
         isLoadingForFetch: true,
         isLoadingForCreate: false,
-        isLoadingForUpdate: false
+        isLoadingForUpdate: false,
+        isLoadingForDelete: false
       },
       (set, get) => {
         // [250710] Todo List 갱신을 위한 비동기 함수 추가
@@ -83,6 +84,8 @@ export const useTodoStore = create(
           },
           // [250711] Todo 항목 삭제
           deleteTodo: async (todo: Todo) => {
+            if (get().isLoadingForDelete) return
+            set({ isLoadingForDelete: true })
             await api({
               url: `/${todo.id}`,
               method: 'DELETE'
@@ -90,7 +93,8 @@ export const useTodoStore = create(
 
             set(state => {
               const index = state.todos.findIndex(t => t.id === todo.id)
-              console.log(index) //state.todos[index] = todo
+              state.todos.splice(index, 1)
+              state.isLoadingForDelete = false
             })
           }
         }
