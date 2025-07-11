@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { combine } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
 import axios from 'axios'
 
 // Template
@@ -57,6 +58,14 @@ export const useTodoStore = create(
           })
           // [250711] 추가 완료 하면 false 설정
           set({ isLoadingForCreate: false })
+        },
+        // [250711] Todo 항목 수정
+        updateTodo: async (todo: Todo) => {
+          await api({
+            url: `/{${todo.id}}`,
+            method: 'PUT',
+            data: todo
+          })
         }
       }
     }
