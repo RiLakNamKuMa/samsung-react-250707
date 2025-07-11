@@ -1,5 +1,5 @@
 // [250711] 내부 요소 참조!!! --> useRef
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 // [250711] stores/todo 내에 Interface를 export 했기 때문에 가져와서 사용할 수 있음
 import type { Todo } from '@/stores/todo'
 import Button from '@/components/Button'
@@ -11,10 +11,15 @@ export default function TodoItem({ todo }: { todo: Todo }) {
   const [title, setTitle] = useState(todo.title)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  // [250711] 데이터가 바뀌었다고 화면이 랜더링 되는게 아니다... 그래서 useEffect로 데이터를 감시!!!
+  // isEditing = true 일 때만 TextField의 focus를 잡아라
+  useEffect(() => {
+    if (isEditing) inputRef.current?.focus()
+  }, [isEditing])
+
   // [250711] 수정 모드 켜졌을 때 처리
   function onEditMode() {
     setIsEditing(true)
-    inputRef.current?.focus()
   }
 
   // [250711] 수정 모드 꺼졌을 때 원복 처리
